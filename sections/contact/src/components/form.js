@@ -5,7 +5,8 @@ const INITIAL_STATE = {
     name: '',
     email: '',
     subject: '',
-    body: ''
+    body: '',
+    status: 'IDLE'
 };
 
 // { type: "dostuff", name: 'Jason'}
@@ -15,6 +16,9 @@ const reducer = (state, action) => {
            return {...state, [action.field]:
         action.value };
 
+        case 'updateStatus':
+            return { ...state, status: action.status }; 
+       case 'reset':
       default:
           return INITIAL_STATE;  
    }
@@ -25,7 +29,12 @@ const Form = () => {
    
     const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
 
-   
+   const setStatus = status => {
+       dispatch({
+           type: 'updateStatus',
+           status
+       })
+   };
 
     const updateFieldValue = field => event => {
        dispatch({
@@ -36,13 +45,36 @@ const Form = () => {
     }
     const handleSubmit = event => {
         event.preventDefault();
+        setStatus('PENDING')
 
         // Todo actually send the message
         console.log(state)
+
+        setTimeout(()=> setStatus('SUCCESS'), 1000)
     }
 
+if (state.status === "SUCCESS") {
+    return(
+        <p className = {styles.success}>
+            Message Sent!!!
+            <button
+            type="reset"
+            onClick={()=> dispatch({ type: 'reset'})}
+            className={`${styles.button} ${styles.centered}`}>
+            Reset
+            </button>
+        </p>
+    )
+}
+
   return (
-      <form onSubmit={handleSubmit}>
+      <>
+      {state.status === 'ERROR' && (
+          <p className= {styles.error}>Something went wrong.
+          Please try again.</p>
+      )}
+      <form className={`${styles.form} ${state.status === 
+    'PENDING' && styles.pending}`} onSubmit={handleSubmit}>
           <label className= {styles.label}>
               Name
               <input className={styles.input}    
@@ -67,6 +99,7 @@ const Form = () => {
               Send
           </button>
       </form>
+      </>
   )
 }
 
