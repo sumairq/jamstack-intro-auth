@@ -1,0 +1,14 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "develop": "gatsby develop"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "gatsby": "^2.25.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
