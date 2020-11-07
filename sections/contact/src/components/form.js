@@ -48,9 +48,20 @@ const Form = () => {
         setStatus('PENDING')
 
         // Todo actually send the message
-        console.log(state)
+        fetch('api/contact', {
+            method: 'POST',
+            body:   JSON.stringify(state)
+        })
+        .then(response=> response.json())
+        .then(response=> {
+            console.log(response)
+            setStatus('SUCCESS'); 
+        })
+        .catch(error => {
+            console.log(error);
+            setStatus('ERROR')
+        })
 
-        setTimeout(()=> setStatus('SUCCESS'), 1000)
     }
 
 if (state.status === "SUCCESS") {
